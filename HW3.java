@@ -4,9 +4,10 @@ import java.util.*;
 
 public class HW3 {
 
+    public static int userpoints = 25;
+    public static int allowedAttempts = 5;
+
     public static void main(String[] args) {
-        //setting default number of attempts, will change if configure() is executed.
-        int allowedAttempts = 5;
         while (true) {
             Scanner reader = new Scanner(System.in);
             System.out.println("Enter (h)elp, (p)lay, (c)onfigure, (r)eport, (q)uit");
@@ -17,7 +18,7 @@ public class HW3 {
                     break;
 
                 case 'p':
-                    //play(reader);
+                    play(reader);
                     break;
 
                 case 'c':
@@ -25,7 +26,7 @@ public class HW3 {
                     break;
 
                 case 'r':
-                    //report();
+                    report();
                     break;
 
                 case 'q':
@@ -125,12 +126,13 @@ public class HW3 {
 
             //checks that userGuess is within accepted values
             while (userGuess > 100 || userGuess < 0) {
-                System.out.println(userGuess + "Is not between 0 and 100 try again");
+                System.out.println(userGuess + " is not between 0 and 100, try again. " + allowedAttempts + " attempts left.");
                 userGuess = reader.nextInt();
                 allowedAttempts--;
             }
             //checks if userGuess is correct
             if (userGuess == computerChosenNumber) {
+                System.out.println("Great guess!! You got it! ");
                 break;
             } else {
                 // Makes a string version of userGuess and computerChosenNumber so it can be split into characters to
@@ -156,7 +158,8 @@ public class HW3 {
                     userTens = userGuessStr.charAt(0);
                     userUnits = userGuessStr.charAt(1);
 
-                } if (computerChosenNumberStr.length() < 2) {
+                }
+                if (computerChosenNumberStr.length() < 2) {
                     computerTens = 0;
                     computerUnits = computerChosenNumberStr.charAt(0);
 
@@ -211,7 +214,79 @@ public class HW3 {
         int attemptsUsed = (originalAllowedAttempts - allowedAttempts);
         return attemptsUsed;
     }
+
+    //returns the number of points earned, takes the number of attempts and the allowed attempts as parameters
+    public static int pointsScored(int attempts, int allowedAttempts) {
+        int pointsEarned;
+        if (attempts <= allowedAttempts) {
+            pointsEarned = 15 - allowedAttempts - attempts;
+        } else {
+            switch (allowedAttempts) {
+                case 7:
+                    pointsEarned = -1;
+                    break;
+
+                case 6:
+                    pointsEarned = -3;
+                    break;
+
+                case 5:
+                    pointsEarned = -5;
+                    break;
+
+                case 4:
+                    pointsEarned = -7;
+                    break;
+
+                default:
+                    pointsEarned = -9;
+                    break;
+
+            }
+        }
+        return pointsEarned;
+    }
+
+    public static boolean playAgain(Scanner reader) {
+        if (userpoints <= 0) {
+            System.out.println("Game over, thank you for playing! ");
+            return false;
+        }
+
+        while (true) {
+            System.out.println("Would you like to play again? YES/NO ");
+            String userResponse = reader.next();
+            userResponse = userResponse.toUpperCase();
+            if (userResponse.equals("YES") || userResponse.equals("Y")) {
+                return true;
+            } else if (userResponse.equals("NO") || userResponse.equals("N")) {
+                return false;
+            } else {
+                System.out.println("Not a valid respond, enter YES or NO");
+            }
+        }
+    }
+
+    public static void report() {
+        System.out.println("You have " + userpoints + " points!");
+    }
+
+    public static void play(Scanner reader) {
+        do {
+            int computerChosenNumber = chooseRandomNumber();
+            int attempts = playSession(reader, computerChosenNumber, allowedAttempts);
+            int pointsScored = pointsScored(attempts, allowedAttempts);
+            System.out.println("Allowed attempts: " + allowedAttempts);
+            System.out.println(" Attempts taken: " + attempts);
+            System.out.println(" Old Score: " + userpoints);
+            System.out.println(" Points earned: " + pointsScored);
+            System.out.println(" New Score: " + (userpoints + pointsScored));
+            userpoints += pointsScored;
+        } while (playAgain(reader));
+        System.out.println("Thank you for playing!!");
+    }
 }
+
 
 
 
