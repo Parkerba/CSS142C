@@ -4,7 +4,7 @@ import java.util.*;
 
 public class HW3 {
 
-    public static int userpoints = 25;
+    public static int userPoints = 25;
     public static int allowedAttempts = 5;
 
     public static void main(String[] args) {
@@ -90,7 +90,7 @@ public class HW3 {
         System.out.println("******************************************************************************");
     }
 
-    // quit() simply terminates the program.
+    // quit() simply terminates the program when called.
     public static void quit() {
         System.exit(0);
     }
@@ -109,12 +109,13 @@ public class HW3 {
         int computerChosenNumber = r.nextInt(100);
 
         // log/return computerChoseNumber
-        System.out.println(computerChosenNumber);
+        //System.out.println(computerChosenNumber);
         return computerChosenNumber;
     }
 
-    //playSession() takes a Scanner, output from chooseRandomNumber() and allowedAttempts as parameters.
-    //takes guess from user and gives hints until user guesses correctly or runs out of attempts, returns number of atempts.
+    /* playSession() takes a Scanner, output from chooseRandomNumber() and allowedAttempts as parameters.
+    takes guess from user and gives hints until user guesses correctly or runs out of attempts, returns number of attempts. */
+
     public static int playSession(Scanner reader, int computerChosenNumber, int allowedAttempts) {
         int originalAllowedAttempts = allowedAttempts;
         while (allowedAttempts > 0) {
@@ -215,7 +216,7 @@ public class HW3 {
         return attemptsUsed;
     }
 
-    //returns the number of points earned, takes the number of attempts and the allowed attempts as parameters
+    // returns the number of points earned, takes the number of attempts and the allowed attempts as parameters
     public static int pointsScored(int attempts, int allowedAttempts) {
         int pointsEarned;
         if (attempts <= allowedAttempts) {
@@ -247,8 +248,11 @@ public class HW3 {
         return pointsEarned;
     }
 
+    /* playAgain checks to see if the user has anymore points left, if not game over, if they do, will ask user
+     if they would like to play again. */
+
     public static boolean playAgain(Scanner reader) {
-        if (userpoints <= 0) {
+        if (userPoints <= 0) {
             System.out.println("Game over, thank you for playing! ");
             return false;
         }
@@ -267,21 +271,24 @@ public class HW3 {
         }
     }
 
+    // report() prints the userPoints when called, takes no parameters.
     public static void report() {
-        System.out.println("You have " + userpoints + " points!");
+        System.out.println("You have " + userPoints + " points!");
     }
 
+    /* play() connects chooseRandomNumber(), playSession(), playAgain(), and pointsScored() to make the guessing part of the program.
+    Only takes the reader Scanner as its parameter.*/
     public static void play(Scanner reader) {
         do {
             int computerChosenNumber = chooseRandomNumber();
             int attempts = playSession(reader, computerChosenNumber, allowedAttempts);
             int pointsScored = pointsScored(attempts, allowedAttempts);
-            System.out.println("Allowed attempts: " + allowedAttempts);
+            System.out.println(" Allowed attempts: " + allowedAttempts);
             System.out.println(" Attempts taken: " + attempts);
-            System.out.println(" Old Score: " + userpoints);
+            System.out.println(" Old Score: " + userPoints);
             System.out.println(" Points earned: " + pointsScored);
-            System.out.println(" New Score: " + (userpoints + pointsScored));
-            userpoints += pointsScored;
+            System.out.println(" New Score: " + (userPoints + pointsScored));
+            userPoints += pointsScored;
         } while (playAgain(reader));
         System.out.println("Thank you for playing!!");
     }
